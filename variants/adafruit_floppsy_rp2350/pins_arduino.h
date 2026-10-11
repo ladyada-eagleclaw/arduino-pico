@@ -3,6 +3,15 @@
 // Floppsy Rev D: RP2350B, 16 MB flash, 8 MB PSRAM.
 #define PICO_RP2350A 0
 
+// Library Manager's TinyUSB uses USB_*; the Pico core passes USBD_*.
+// Keep Floppsy's assigned IDs with either copy of the USB stack.
+#ifndef USB_VID
+#define USB_VID USBD_VID
+#endif
+#ifndef USB_PID
+#define USB_PID USBD_PID
+#endif
+
 // The power indicator LEDs are not connected to GPIO.
 #define PIN_NEOPIXEL (18u)
 #define NUM_NEOPIXEL (1u)
