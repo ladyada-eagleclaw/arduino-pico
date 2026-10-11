@@ -93,6 +93,7 @@
 #define WIRE_HOWMANY (1u)
 
 #define RP2350_PSRAM_CS (47u)
-#define RP2350_PSRAM_MAX_SCK_HZ (84 * 1000 * 1000)
+// Validated with sustained PIO/DMA flux capture into the fitted 8 MB PSRAM.
+#define RP2350_PSRAM_MAX_SCK_HZ (40 * 1000 * 1000)
 
 #include "../generic/common.h"
