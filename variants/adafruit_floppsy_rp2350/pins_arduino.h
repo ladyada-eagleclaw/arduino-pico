@@ -103,6 +103,6 @@
 
 #define RP2350_PSRAM_CS (47u)
 // Validated with sustained PIO/DMA flux capture into the fitted 8 MB PSRAM.
-#define RP2350_PSRAM_MAX_SCK_HZ (40 * 1000 * 1000)
+#define RP2350_PSRAM_MAX_SCK_HZ (80 * 1000 * 1000)
 
 #include "../generic/common.h"
