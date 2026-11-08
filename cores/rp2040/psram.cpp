@@ -149,7 +149,7 @@ size_t __no_inline_not_in_flash_func(psram_detect)(void) {
     return psram_size;
 }
 
-size_t __no_inline_not_in_flash_func(psram_init)(uint cs_pin) {
+size_t __no_inline_not_in_flash_func(psram_init)(uint cs_pin, uint32_t hz = 0) {
     gpio_set_function(cs_pin, GPIO_FUNC_XIP_CS1);
 
     uint32_t intr_stash = save_and_disable_interrupts();
@@ -164,7 +164,9 @@ size_t __no_inline_not_in_flash_func(psram_init)(uint cs_pin) {
     // Read clock speed before entering direct mode (flash access is
     // unavailable while QMI direct mode is enabled)
     const int max_psram_freq = RP2350_PSRAM_MAX_SCK_HZ;
-    const int clock_hz = clock_get_hz(clk_sys);
+    // main() prepares PSRAM timing before raising clk_sys. Use that target
+    // clock when supplied, rather than calculating timing for the old clock.
+    const int clock_hz = hz ? hz : clock_get_hz(clk_sys);
 
     // Enable direct mode, PSRAM CS, clkdiv of 10.
     qmi_hw->direct_csr = 10 << QMI_DIRECT_CSR_CLKDIV_LSB | \
@@ -257,7 +259,7 @@ void psram_reinit_timing(uint32_t hz) {
     if (!hz) {
         hz = (uint32_t)clock_get_hz(clk_sys);
     }
-    psram_init(RP2350_PSRAM_CS);
+    psram_init(RP2350_PSRAM_CS, hz);
 }
 
 static bool __psram_heap_init() {
